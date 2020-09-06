@@ -11,12 +11,7 @@ const app = express();
 
 app.set("trust proxy", true);
 app.use(json());
-app.use(
-	cookieSession({
-		signed: false,
-		secure: process.env.NODE_ENV !== "test", // ensures that cookies are set only when HTTPS
-	})
-);
+app.use(cookieSession({ signed: false }));
 
 app.get("/", (req, res) => {
 	res.send("OK");
@@ -28,7 +23,6 @@ app.use(SignUpRoute);
 app.all("*", () => {
 	const error = new Error("404 - Route not found.");
 	error.statusCode = 404;
-	error.data = errors.array();
 	throw error;
 });
 

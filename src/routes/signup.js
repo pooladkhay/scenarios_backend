@@ -25,7 +25,6 @@ router.post(
 		if (existingUser) {
 			const error = new Error("User already exists.");
 			error.statusCode = 409;
-			error.data = errors.array();
 			throw error;
 		} else {
 			const user = new User({
