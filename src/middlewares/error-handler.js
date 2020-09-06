@@ -1,9 +1,7 @@
-const CustomError = require("../errors/custom-error");
-
-module.exports = errorHandler = (err, req, res, next) => {
-	if (err instanceof CustomError) {
-		return res.status(err.statusCode).send({ errors: err.serializeErrors() });
-	}
-
-	res.status(400).send({ errors: [{ message: "Something went wrong!" }] });
+module.exports = (error, req, res, next) => {
+	console.log(error);
+	const status = error.statusCode || 500;
+	const message = error.message;
+	const data = error.data;
+	res.status(status).json({ error: true, message: message, data: data });
 };

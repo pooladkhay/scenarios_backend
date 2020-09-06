@@ -19,8 +19,11 @@ const start = async () => {
 	} catch (err) {
 		console.error(err);
 	}
-	app.listen(4004, () => {
-		console.log("Scenario on Port 4004");
+
+	const port = process.env.PORT || 4004;
+
+	app.listen(port, () => {
+		console.log(`Scenario on Port ${port}`);
 	});
 };
 
