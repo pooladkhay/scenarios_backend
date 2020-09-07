@@ -1,11 +1,8 @@
 const express = require("express");
 const { body } = require("express-validator");
-// const jwt = require("jsonwebtoken");
-// const { randomBytes } = require("crypto");
-
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Scenario = require("../models/scenario");
-
 const validateRequest = require("../middlewares/validate-request");
 const currentUser = require("../middlewares/current-user");
 
@@ -44,17 +41,18 @@ router.post(
 				scenarioUId: scenarioForUser.uId,
 			});
 			await user.save();
-			// // Generate JWT
-			// const userJwt = jwt.sign(
-			// 	{
-			// 		id: user.id,
-			// 		email: user.email,
-			// 	},
-			// 	process.env.JWT_KEY
-			// );
 
-			// // Store it on Session Object
-			// req.session = { jwt: userJwt };
+			// Generate JWT
+			const userJwt = jwt.sign(
+				{
+					uId: user.uId,
+					email: user.email,
+				},
+				process.env.JWT_KEY
+			);
+
+			// Store it on Session Object
+			req.session = { jwt: userJwt };
 
 			res.status(201).send(user);
 		}

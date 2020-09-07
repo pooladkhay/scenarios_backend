@@ -11,13 +11,33 @@ const Scenario = require("../models/scenario");
 const router = express.Router();
 
 // Assign scenario to authenticated users
-router.get("/api/scenarios/", requireAuth, async (req, res) => {});
+router.get("/api/scenarios/", currentUser, requireAuth, async (req, res) => {
+	if (req.session.jwt) {
+		// console.log(req.currentUser);
+		const scenario = await Scenario.findOne({ userUId: req.currentUser.uId });
+		res.status(200).send({
+			msg: "You ALREADY have a Scenario",
+			scenario: {
+				uId: scenario.uId,
+				color1: scenario.color1,
+				color2: scenario.color2,
+				color3: scenario.color3,
+			},
+		});
+	}
+});
 
 // Assign scenario to non-authenticated users
 router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 	if (req.session.jwt) {
 		const scenario = await Scenario.findOne({ userUId: req.currentUser.uId });
-		res.status(200).send({ msg: "You ALREADY have a Scenario", scenario });
+		if (!scenario) {
+			return res.status(200).send({ msg: "No scenario available" });
+		}
+		res.status(200).send({
+			msg: "You ALREADY have a Scenario",
+			scenario: { uId: scenario.uId, color1: scenario.color1 },
+		});
 	} else {
 		const randomUserId = randomBytes(8).toString("hex");
 		const userJwt = jwt.sign(
@@ -40,7 +60,10 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 			selectedScenario.isAssigned = true;
 			await selectedScenario.save();
 
-			return res.status(200).send({ msg: "You now have a scenario!!", selectedScenario });
+			return res.status(200).send({
+				msg: "You now have a scenario!!",
+				scenario: { uId: selectedScenario.uId, color1: selectedScenario.color1 },
+			});
 		} else if (scenarios.length === 0) {
 			return res.status(200).send({ msg: "No scenario available" });
 		} else {
@@ -49,7 +72,10 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 			selectedScenario.isAssigned = true;
 			await selectedScenario.save();
 
-			return res.status(200).send({ msg: "You now have a scenario!", selectedScenario });
+			return res.status(200).send({
+				msg: "You now have a scenario!",
+				scenario: { uId: selectedScenario.uId, color1: selectedScenario.color1 },
+			});
 		}
 	}
 });

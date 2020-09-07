@@ -6,6 +6,8 @@ const cookieSession = require("cookie-session");
 const errorHandler = require("./middlewares/error-handler");
 
 const SignUpRoute = require("./routes/signup");
+const SignInRoute = require("./routes/signin");
+const SignOutRoute = require("./routes/signout");
 const assignRoute = require("./routes/assignScenario");
 
 const app = express();
@@ -19,6 +21,8 @@ app.get("/", (req, res) => {
 });
 
 app.use(SignUpRoute);
+app.use(SignInRoute);
+app.use(SignOutRoute);
 app.use(assignRoute);
 
 // Not fount route err handler
