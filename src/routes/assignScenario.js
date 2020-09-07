@@ -39,7 +39,7 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 			scenario: { uId: scenario.uId, color1: scenario.color1 },
 		});
 	} else {
-		const randomUserId = randomBytes(8).toString("hex");
+		const randomUserId = randomBytes(5).toString("hex");
 		const userJwt = jwt.sign(
 			{
 				uId: randomUserId,

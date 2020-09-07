@@ -25,13 +25,28 @@ router.post(
 
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
+			// Check for existing user
 			const error = new Error("User already exists.");
 			error.statusCode = 409;
 			throw error;
 		} else {
+			// Register new User
 			const scenarioForUser = await Scenario.findOne({ userUId: req.currentUser.uId });
 			console.log(scenarioForUser);
 
+			// logic for referal system
+			let pointsForNewUser = 0;
+			if (referedBy) {
+				// check if referal code is valid
+				const usr = await User.findOne({ uId: referedBy });
+				if (usr) {
+					pointsForNewUser = 100;
+					usr.points += 20;
+					await usr.save();
+				}
+			}
+
+			// logic for saving new user to db
 			const user = new User({
 				name,
 				email,
@@ -39,6 +54,7 @@ router.post(
 				referedBy,
 				uId: req.currentUser.uId,
 				scenarioUId: scenarioForUser.uId,
+				points: pointsForNewUser,
 			});
 			await user.save();
 
