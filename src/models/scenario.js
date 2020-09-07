@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const scenarioSchema = new mongoose.Schema(
 	{
+		uId: { type: String, required: true },
 		color1: {
 			type: String,
 			required: true,
@@ -14,6 +15,7 @@ const scenarioSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		userUId: { type: String },
 		isAssigned: { type: Boolean, required: true },
 	},
 	{ timestamps: true }

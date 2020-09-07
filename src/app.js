@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const errorHandler = require("./middlewares/error-handler");
 
 const SignUpRoute = require("./routes/signup");
+const assignRoute = require("./routes/assignScenario");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(SignUpRoute);
+app.use(assignRoute);
 
 // Not fount route err handler
 app.all("*", () => {

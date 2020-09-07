@@ -1,9 +1,13 @@
 const express = require("express");
 const { body } = require("express-validator");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
+// const { randomBytes } = require("crypto");
 
 const User = require("../models/user");
+const Scenario = require("../models/scenario");
+
 const validateRequest = require("../middlewares/validate-request");
+const currentUser = require("../middlewares/current-user");
 
 const router = express.Router();
 
@@ -18,6 +22,7 @@ router.post(
 			.withMessage("Password must be between 4-20 chars"),
 	],
 	validateRequest,
+	currentUser,
 	async (req, res) => {
 		const { email, password, name, referedBy } = req.body;
 
@@ -27,24 +32,29 @@ router.post(
 			error.statusCode = 409;
 			throw error;
 		} else {
+			const scenarioForUser = await Scenario.findOne({ userUId: req.currentUser.uId });
+			console.log(scenarioForUser);
+
 			const user = new User({
 				name,
 				email,
 				password,
 				referedBy,
+				uId: req.currentUser.uId,
+				scenarioUId: scenarioForUser.uId,
 			});
 			await user.save();
-			// Generate JWT
-			const userJwt = jwt.sign(
-				{
-					id: user.id,
-					email: user.email,
-				},
-				process.env.JWT_KEY
-			);
+			// // Generate JWT
+			// const userJwt = jwt.sign(
+			// 	{
+			// 		id: user.id,
+			// 		email: user.email,
+			// 	},
+			// 	process.env.JWT_KEY
+			// );
 
-			// Store it on Session Object
-			req.session = { jwt: userJwt };
+			// // Store it on Session Object
+			// req.session = { jwt: userJwt };
 
 			res.status(201).send(user);
 		}

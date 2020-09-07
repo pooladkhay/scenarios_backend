@@ -5,6 +5,7 @@ const Password = require("../services/password");
 
 const userSchema = new mongoose.Schema(
 	{
+		uId: { type: String, required: true },
 		email: {
 			type: String,
 			required: true,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		scenario: { type: String },
+		scenarioUId: { type: String },
 		referedBy: { type: String },
 		points: { type: Number },
 	},
