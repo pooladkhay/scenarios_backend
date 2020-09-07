@@ -17,8 +17,9 @@ router.get("/api/scenarios/", currentUser, requireAuth, async (req, res) => {
 
 		// sending scenario to user
 		res.status(200).send({
-			msg: "You ALREADY have a Scenario",
-			scenario: {
+			error: false,
+			message: "Here are your Scenarios",
+			scenarios: {
 				uId: scenario.uId,
 				color1: scenario.color1,
 				color2: scenario.color2,
@@ -37,13 +38,14 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 
 		//check if there are any available scenarios
 		if (!scenario) {
-			return res.status(200).send({ msg: "No scenario available" });
+			return res.status(200).send({ error: true, message: "No scenario available" });
 		}
 
 		// If user has visited our app before and has a scenario,
 		// send senario to user again
 		res.status(200).send({
-			msg: "You ALREADY have a Scenario",
+			error: false,
+			message: "You ALREADY have a Scenario",
 			scenario: { uId: scenario.uId, color1: scenario.color1 },
 		});
 	} else {
@@ -88,12 +90,13 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 
 			// sending scenario to user
 			return res.status(200).send({
-				msg: "You now have a scenario!!",
+				error: false,
+				message: "You now have a scenario!!",
 				scenario: { uId: selectedScenario.uId, color1: selectedScenario.color1 },
 			});
 		} else if (scenarios.length === 0) {
 			// No scenario available:
-			return res.status(200).send({ msg: "No scenario available" });
+			return res.status(200).send({ message: "No scenario available" });
 		} else {
 			// One scenario available:
 
@@ -105,7 +108,8 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 
 			// sending scenario to user
 			return res.status(200).send({
-				msg: "You now have a scenario!",
+				error: false,
+				message: "You now have a scenario!",
 				scenario: { uId: selectedScenario.uId, color1: selectedScenario.color1 },
 			});
 		}
@@ -125,7 +129,7 @@ router.post("/api/scenarios/create", currentUser, async (req, res) => {
 	});
 	await scenario.save();
 
-	res.status(200).send({ msg: "Scenario created", scenario });
+	res.status(200).send({ message: "Scenario created", scenario });
 });
 
 module.exports = router;

@@ -10,6 +10,7 @@ const SignUpRoute = require("./routes/signup");
 const SignInRoute = require("./routes/signin");
 const SignOutRoute = require("./routes/signout");
 const assignRoute = require("./routes/assignScenario");
+const currentUser = require("./routes/currentUser");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(SignUpRoute);
 app.use(SignInRoute);
 app.use(SignOutRoute);
 app.use(assignRoute);
+app.use(currentUser);
 
 // Not fount route err handler
 app.all("*", () => {
