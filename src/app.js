@@ -5,6 +5,7 @@ const { json } = require("body-parser");
 const cookieSession = require("cookie-session");
 const errorHandler = require("./middlewares/error-handler");
 
+// Routes
 const SignUpRoute = require("./routes/signup");
 const SignInRoute = require("./routes/signin");
 const SignOutRoute = require("./routes/signout");
@@ -12,13 +13,9 @@ const assignRoute = require("./routes/assignScenario");
 
 const app = express();
 
-app.set("trust proxy", true);
 app.use(json());
+app.set("trust proxy", true);
 app.use(cookieSession({ signed: false }));
-
-app.get("/", (req, res) => {
-	res.send("OK");
-});
 
 app.use(SignUpRoute);
 app.use(SignInRoute);

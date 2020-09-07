@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 const app = require("./app");
 
+// Start function will setup a connection to db
 const start = async () => {
 	if (!process.env.JWT_KEY) {
 		throw new Error("JWT_KEY must be defined.");
 	}
+
+	console.log("Connecting to MongoDB, Please wait...");
+
 	if (!process.env.MONGO_URI) {
 		throw new Error("MONGO_URI must be defined.");
 	}
@@ -15,7 +19,7 @@ const start = async () => {
 			useUnifiedTopology: true,
 			useCreateIndex: true,
 		});
-		console.log("Connected to MongoDB");
+		console.log("Connected to MongoDB.");
 	} catch (err) {
 		console.error(err);
 	}
@@ -23,7 +27,7 @@ const start = async () => {
 	const port = process.env.PORT || 4004;
 
 	app.listen(port, () => {
-		console.log(`Scenario on Port ${port}`);
+		console.log(`Listening on Port ${port}`);
 	});
 };
 

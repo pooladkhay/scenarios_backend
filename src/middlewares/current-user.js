@@ -1,3 +1,6 @@
+// This middleware checks if user has visited before and has a cookie
+// then sets the cookie payload on req.currentUser
+
 const jwt = require("jsonwebtoken");
 
 module.exports = currentUser = (req, res, next) => {

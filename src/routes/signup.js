@@ -11,6 +11,7 @@ const router = express.Router();
 router.post(
 	"/api/users/signup",
 	[
+		// post params validation using express-validator
 		body("email").isEmail().withMessage("Please enter a valid Email"),
 		body("name").isString().withMessage("Name is required"),
 		body("password")

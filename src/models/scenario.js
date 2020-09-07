@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Model for Scenario
 const scenarioSchema = new mongoose.Schema(
 	{
 		uId: { type: String, required: true },

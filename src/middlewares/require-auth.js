@@ -1,3 +1,5 @@
+// This middleware checks if a user is authenticated
+
 const User = require("../models/user");
 
 module.exports = requireAuth = async (req, res, next) => {

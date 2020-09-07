@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Password = require("../services/password");
 
-// Model fields for User are is self-explanatory!!
-
+// Model for User
 const userSchema = new mongoose.Schema(
 	{
 		uId: { type: String, required: true },

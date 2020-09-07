@@ -1,3 +1,5 @@
+// A helper for hashing and comparing passwords upon SignIn
+
 const { scrypt, randomBytes } = require("crypto");
 const { promisify } = require("util");
 

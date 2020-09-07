@@ -1,3 +1,5 @@
+// Middlware for catching express-validator errors
+
 const { validationResult } = require("express-validator");
 
 module.exports = validateRequest = (req, res, next) => {
