@@ -9,7 +9,7 @@ const errorHandler = require("./middlewares/error-handler");
 const SignUpRoute = require("./routes/signup");
 const SignInRoute = require("./routes/signin");
 const SignOutRoute = require("./routes/signout");
-const assignRoute = require("./routes/assignScenario");
+const scenariosRoute = require("./routes/scenarios");
 const currentUser = require("./routes/currentUser");
 
 const app = express();
@@ -29,7 +29,7 @@ app.use(cookieSession({ signed: false }));
 app.use(SignUpRoute);
 app.use(SignInRoute);
 app.use(SignOutRoute);
-app.use(assignRoute);
+app.use(scenariosRoute);
 app.use(currentUser);
 
 // Not fount route err handler
