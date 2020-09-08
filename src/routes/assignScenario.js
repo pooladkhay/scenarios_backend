@@ -30,7 +30,7 @@ router.get("/api/scenarios/", currentUser, requireAuth, async (req, res) => {
 });
 
 // Assign scenario to non-authenticated users
-// this users will receive 1 color
+// they will receive 1 color
 router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 	// Check if user has visited our app before
 	if (req.session.jwt) {
@@ -79,7 +79,7 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 			// More that one scenario available:
 
 			// generating a random uId
-			const randomIndex = Math.floor(Math.random() * 2);
+			const randomIndex = Math.floor(Math.random() * scenarios.length);
 			selectedScenarioUId = scenarios[randomIndex].uId;
 
 			// adding user's uId to scenario and mark is as isAssigned=true
@@ -96,7 +96,8 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 			});
 		} else if (scenarios.length === 0) {
 			// No scenario available:
-			return res.status(200).send({ message: "No scenario available" });
+			// req.session = null;
+			return res.status(200).send({ error: true, message: "No scenario available" });
 		} else {
 			// One scenario available:
 
@@ -116,7 +117,7 @@ router.get("/api/scenarios/assign", currentUser, async (req, res) => {
 	}
 });
 
-// Create new scenario
+// Create new scenario and save it to db
 router.post("/api/scenarios/create", currentUser, async (req, res) => {
 	const { uId, color1, color2, color3 } = req.body;
 
@@ -130,6 +131,21 @@ router.post("/api/scenarios/create", currentUser, async (req, res) => {
 	await scenario.save();
 
 	res.status(200).send({ message: "Scenario created", scenario });
+});
+
+// Resets scenarios
+router.post("/api/scenarios/reset", currentUser, async (req, res) => {
+	const scenarios = await Scenario.find();
+	console.log(scenarios.length);
+
+	for (let i = 0; i < scenarios.length; i++) {
+		await Scenario.findOneAndUpdate(
+			{ isAssigned: true },
+			{ isAssigned: false, userUId: "" }
+		);
+	}
+
+	res.status(200).send({ message: "Reset done." });
 });
 
 module.exports = router;

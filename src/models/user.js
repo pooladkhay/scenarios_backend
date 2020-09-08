@@ -4,7 +4,7 @@ const Password = require("../services/password");
 // Model for User
 const userSchema = new mongoose.Schema(
 	{
-		uId: { type: String, required: true },
+		uId: { type: String },
 		email: {
 			type: String,
 			required: true,

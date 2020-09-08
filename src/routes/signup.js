@@ -32,7 +32,10 @@ router.post(
 			throw error;
 		} else {
 			// Register new User
-			const scenarioForUser = await Scenario.findOne({ userUId: req.currentUser.uId });
+			let scenarioForUser;
+			if (req.currentUser) {
+				scenarioForUser = await Scenario.findOne({ userUId: req.currentUser.uId });
+			}
 			console.log(scenarioForUser);
 
 			// logic for referal system
@@ -53,8 +56,8 @@ router.post(
 				email,
 				password,
 				referedBy,
-				uId: req.currentUser.uId,
-				scenarioUId: scenarioForUser.uId,
+				uId: req.currentUser ? req.currentUser.uId : "",
+				scenarioUId: scenarioForUser ? scenarioForUser.uId : "",
 				points: pointsForNewUser,
 			});
 			await user.save();

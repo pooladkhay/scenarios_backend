@@ -5,6 +5,7 @@ const requireAuth = require("../middlewares/require-auth");
 
 const router = express.Router();
 
+// checks if user is authenticated and sends back appropriate response
 router.get("/api/users/current", currentUser, requireAuth, async (req, res) => {
 	const user = await User.findOne({ email: req.currentUser.email });
 	if (user) {
